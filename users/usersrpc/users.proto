@@ -1,0 +1,23 @@
+syntax = "proto3";
+package usersgrpc;
+
+option go_package = "github.com/PratikKumar125/go-microservices/users";
+
+service UserRpcService {
+    rpc GetUserByEmail(GetUserByEmailInput) returns (GetUserByEmailResponse) {}
+}
+
+message GetUserByEmailInput {
+    string email = 1;
+    string name = 2;
+}
+
+message User {
+    string id = 1;
+    string name = 2;
+    string email = 3;
+}
+
+message GetUserByEmailResponse {
+    repeated User users = 1;
+}
