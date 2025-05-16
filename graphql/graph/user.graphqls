@@ -1,0 +1,18 @@
+type User {
+  id: String!
+  name: String!
+  email: String!
+}
+
+type Query {
+  users(name: String, email: String): [User!]!
+}
+
+input NewUser {
+  name: String!
+  email: String!
+}
+
+type Mutation {
+  createUser(input: NewUser!): User!
+}
