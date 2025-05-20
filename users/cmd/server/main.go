@@ -36,12 +36,13 @@ func main() {
 	// 2. Database Init
 	db, err := db.NewDatabase(ctx, appConfig, logger)
 	if err != nil {
-		logger.Error("Failed to initialize database: ", err)
+		logger.Error("Failed to initialize database", "error", err)
 	}
 	defer db.Close()
 
 	if err := db.Ping(ctx); err != nil {
-		logger.Error("Failed to ping database: ", err)
+		logger.Error("Failed to ping database", "error", err)
+		panic(err)
 	}
 
 	// 3. Repository Init
@@ -74,7 +75,7 @@ func main() {
 	grpcAddr := appConfig.ConfigService.String("app.grpc_port")
 	lis, err := net.Listen("tcp", grpcAddr)
 	if err != nil {
-		logger.Error("Failed to listen for gRPC: ", err)
+		logger.Error("Failed to listen for gRPC", "error", err)
 	}
 
 	grpcServer := grpc.NewServer()
@@ -84,7 +85,7 @@ func main() {
 	go func() {
 		logger.Info("Started gRPC server")
 		if err := grpcServer.Serve(lis); err != nil {
-			logger.Error("gRPC server failed: ", err)
+			logger.Error("gRPC server failed", "error", err)
 		}
 	}()
 
@@ -97,7 +98,7 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	if err := server.Shutdown(ctx); err != nil {
-		logger.Error("Server shutdown failed: ", err)
+		logger.Error("Server shutdown failed", "error", err)
 	}
 	logger.Info("Server Stopped")
 }

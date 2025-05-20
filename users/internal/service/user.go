@@ -31,7 +31,7 @@ func (service UserService) GetUsers(ctx context.Context, req url.Values) ([]mode
 	}
 	users, err := service.userRepository.Search(ctx, filters)
 	if err != nil {
-		service.logger.Error("Error getting users", err)
+		service.logger.Error("Error getting users", "error", err)
 		return nil, err
 	}
 

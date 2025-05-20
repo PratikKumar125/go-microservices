@@ -31,7 +31,7 @@ func NewDatabase(ctx context.Context, cfg *config.AppConfig, logger *logging.Log
 		// Initialize connection pool
 		pool, err := pgxpool.New(ctx, connString)
 		if err != nil {
-			logger.Error("failed to initialize database pool", err)
+			logger.Error("failed to initialize database pool", "error", err)
 			return
 		}
 
@@ -40,7 +40,7 @@ func NewDatabase(ctx context.Context, cfg *config.AppConfig, logger *logging.Log
 
 		// Ensure migrations table exists
 		if err := instance.createMigrationsTable(ctx); err != nil {
-			logger.Error("Failed to create migration table", err)
+			logger.Error("Failed to create migration table", "error", err)
 			instance.Close()
 			instance = nil
 			return
